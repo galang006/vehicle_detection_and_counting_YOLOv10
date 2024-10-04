@@ -1,5 +1,5 @@
 from datetime import datetime
-from config import VEHICLE_CLASSES
+from .config import VEHICLE_CLASSES
 import pandas as pd
 import os
 

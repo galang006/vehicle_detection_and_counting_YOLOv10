@@ -7,7 +7,6 @@ import supervision as sv
 import pandas as pd
 from datetime import datetime
 import os
-from config import *
 from utils import *
 
 if __name__ == "__main__":

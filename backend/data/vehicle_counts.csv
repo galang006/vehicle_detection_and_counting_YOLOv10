@@ -1,0 +1,5 @@
+Class,Nord In,Nord Out,East In,East Out,South In,South Out,West In,West Out,timestamp
+bus,0,0,0,0,0,0,0,0,2024-10-04 12:19:47
+car,0,5,1,0,3,0,2,0,2024-10-04 12:19:47
+motorcycle,4,6,1,1,10,1,1,3,2024-10-04 12:19:47
+truck,0,0,0,0,0,0,0,0,2024-10-04 12:19:47

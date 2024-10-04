@@ -1,4 +1,4 @@
-from config import vehicle_count, vehicle_track
+from .config import vehicle_count, vehicle_track
 from datetime import datetime
 import cv2
 import numpy as np
