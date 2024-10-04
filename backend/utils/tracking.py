@@ -11,8 +11,8 @@ def save_track(cross_in_out, detect, speed_record, dir, in_out, frame):
             tracker_id = detect.tracker_id[index]
             x1, y1, x2, y2 = detect.xyxy[index]
             timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            speed = speed_record.get(tracker_id, 0)
-            new_data = [tracker_id,detect.data["class_name"][index],x1,y1,x2,y2,f"{dir}_{in_out}",speed,timestamp]
+            speed = round(speed_record.get(tracker_id, 0), 2)
+            new_data = [tracker_id,detect.data["class_name"][index],round(x1, 1),round(y1, 1),round(x2, 1),round(y2, 1),f"{dir}_{in_out}",speed,timestamp]
             vehicle_image = frame[int(y1):int(y2), int(x1):int(x2)]
             cv2.imwrite(f"data/images/{dir}/{vehicle}_{tracker_id}_{timestamp}.jpg", vehicle_image)
             vehicle_track.append(new_data)
