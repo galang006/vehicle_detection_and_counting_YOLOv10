@@ -147,11 +147,11 @@ def vehicle_detection():
     ffmpeg_process.wait()
 
 
-def display_detecion():
+def display_detection():
     global vehicle_count
     global vehicle_track
     global last_saved_minute
-    
+
     signal.signal(signal.SIGINT, lambda sig, frame: signal_handler(sig, frame, vehicle_count, vehicle_track))
     for directory in directories:
         if not os.path.exists(directory):
