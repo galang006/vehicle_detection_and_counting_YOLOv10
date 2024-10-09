@@ -3,6 +3,12 @@ from .config import VEHICLE_CLASSES
 import pandas as pd
 import os
 
+def signal_handler(sig, frame, vehicle_count, vehicle_track):
+    print("Keyboard interrupt detected. Saving data...")
+    vehicle_count, vehicle_track = save_data_to_csv(vehicle_count, vehicle_track)
+    print("Data successfully saved.")
+    exit(0)
+
 def save_data_to_csv(vehicle_count, vehicle_track):
     current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     data = {
@@ -41,5 +47,12 @@ def save_data_to_csv(vehicle_count, vehicle_track):
         print(f"Permission denied: Unable to write to {file_path} or {track_file_path}. Please close the file if it is open or check file permissions.")
     except Exception as e:
         print(f"An error occurred while saving the data: {e}")
+
+    vehicle_count = {
+        "Nord": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
+        "East": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
+        "South": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
+        "West": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
+    }
     
-    return {}, []
+    return []

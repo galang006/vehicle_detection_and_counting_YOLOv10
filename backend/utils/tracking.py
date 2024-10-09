@@ -24,14 +24,13 @@ def calculate_speed(detections, coordinates, fps):
         if len(coordinates[tracker_id]) < fps / 2:
             speed_labels.append(f"#{tracker_id}")
         else:
-            coordinate_start_x, coordinate_start_y = coordinates[tracker_id][-1]  # Titik akhir
-            coordinate_end_x, coordinate_end_y = coordinates[tracker_id][0]       # Titik awal
+            coordinate_start_x, coordinate_start_y = coordinates[tracker_id][-1]  
+            coordinate_end_x, coordinate_end_y = coordinates[tracker_id][0]      
 
             delta_x = abs(coordinate_start_x - coordinate_end_x)
             delta_y = abs(coordinate_start_y - coordinate_end_y)
 
-            # Menghitung jarak Euclidean
-            distance = np.sqrt(delta_x**2 + delta_y**2)  # Jarak total dari perubahan x dan y
+            distance = np.sqrt(delta_x**2 + delta_y**2)  
 
             time = len(coordinates[tracker_id]) / fps
             speed = distance / time * 3.6

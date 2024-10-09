@@ -6,7 +6,7 @@ import axios from 'axios';
 const VehicleLineChart = () => {
     const [vehicleData, setVehicleData] = useState([]);
 
-    useEffect(() => {
+    const fetchVehicleData = () => {
         // Ambil data dari API
         axios.get('http://127.0.0.1:5000/vehicle_count') 
             .then(response => {
@@ -46,6 +46,14 @@ const VehicleLineChart = () => {
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
+    };
+    
+    useEffect(() => {
+        fetchVehicleData();
+
+        const intervalId = setInterval(fetchVehicleData, 300000);
+
+        return () => clearInterval(intervalId);
     }, []);
 
     return (

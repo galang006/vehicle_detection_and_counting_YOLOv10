@@ -18,6 +18,7 @@ LINES_RECTANGLE = [
 ]
   
 SOURCE = np.array([[335, 567], [1383, 520], [2450, 820], [-350, 1250]])
+TARGET_WIDTH, TARGET_HEIGHT= 30, 21.5
 
 VEHICLE_CLASSES = ["bus", "car", "motorcycle", "truck"]
 
@@ -33,8 +34,6 @@ vehicle_count = {
 last_saved_minute = -1
 
 vehicle_track = []
-
-TARGET_WIDTH, TARGET_HEIGHT= 30, 21.5
 
 TARGET = np.array(
     [
