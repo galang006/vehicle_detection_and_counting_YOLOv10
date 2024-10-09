@@ -5,7 +5,7 @@ import os
 
 def signal_handler(sig, frame, vehicle_count, vehicle_track):
     print("Keyboard interrupt detected. Saving data...")
-    vehicle_count, vehicle_track = save_data_to_csv(vehicle_count, vehicle_track)
+    save_data_to_csv(vehicle_count, vehicle_track)
     print("Data successfully saved.")
     exit(0)
 
@@ -48,11 +48,4 @@ def save_data_to_csv(vehicle_count, vehicle_track):
     except Exception as e:
         print(f"An error occurred while saving the data: {e}")
 
-    vehicle_count = {
-        "Nord": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
-        "East": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
-        "South": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
-        "West": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
-    }
-    
     return []

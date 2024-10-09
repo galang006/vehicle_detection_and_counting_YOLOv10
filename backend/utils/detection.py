@@ -17,7 +17,7 @@ def vehicle_detection():
     global vehicle_count
     global vehicle_track
     global last_saved_minute
-
+    
     signal.signal(signal.SIGINT, lambda sig, frame: signal_handler(sig, frame, vehicle_count, vehicle_track))
 
     for directory in directories:
@@ -132,7 +132,7 @@ def vehicle_detection():
 
             current_time = datetime.now()
             if current_time.minute % 5 == 0 and current_time.second == 0 and current_time.minute != last_saved_minute:
-                vehicle_count, vehicle_track = save_data_to_csv(vehicle_count, vehicle_track)
+                vehicle_track = save_data_to_csv(vehicle_count, vehicle_track)
                 last_saved_minute = current_time.minute  
 
             ffmpeg_process.stdin.write(annotated_frame.tobytes())
