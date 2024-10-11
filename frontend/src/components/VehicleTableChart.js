@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const VehicleDataTable = () => {
   const [vehicleData, setVehicleData] = useState([]);
-  // const [selectedData, setSelectedData] = useState(null);
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -14,19 +13,8 @@ const VehicleDataTable = () => {
       .catch(error => console.error('Error fetching data:', error));
   }, []);
 
-  // Function to handle row click
   const handleRowClick = (trackId, className) => {
     navigate(`/vehicle/${trackId}/${className}`);
-    // console.log('Clicked Track ID:', trackId);
-    // console.log('Clicked Class Name:', className);
-
-    // fetch(`http://127.0.0.1:5000/vehicle_track?track_id=${trackId}&class_name=${className}`)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     console.log('Fetched data:', data);  // Log the data returned from the API
-    //     setSelectedData(data);  // You can set this to state or process it further
-    //   })
-    //   .catch(error => console.error('Error fetching specific data:', error));
   };
 
   return (
