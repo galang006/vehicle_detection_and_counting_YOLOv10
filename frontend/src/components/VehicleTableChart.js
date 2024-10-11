@@ -39,6 +39,24 @@ const VehicleDataTable = () => {
     }
   };
 
+  // Get current data to display based on pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = vehicleData.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Handle next and previous page buttons
+  const handleNextPage = () => {
+    if (indexOfLastItem < vehicleData.length) {
+      setCurrentPage(prevPage => prevPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prevPage => prevPage - 1);
+    }
+  };
+
   return (
     <div className="container mt-5">
       <h2>Vehicle Track Table</h2>
