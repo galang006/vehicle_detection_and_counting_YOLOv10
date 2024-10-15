@@ -8,7 +8,7 @@ const VehicleDirectionBarChart = () => {
 
     useEffect(() => {
         // Ambil data dari API
-        axios.get('http://127.0.0.1:5000/vehicle_track')
+        axios.get('http://127.0.0.1:5000/vehicle_track?loc=simpang_demangan_view_utara')
             .then(response => {
                 console.log(response.data); // Debug data
                 const formattedData = response.data.reduce((acc, item) => {

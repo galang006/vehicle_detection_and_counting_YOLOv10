@@ -3,12 +3,12 @@ import Hls from 'hls.js';
 
 const VideoPlay = () => {
   const videoRef = useRef(null);
-
+  
   useEffect(() => {
     if (Hls.isSupported()) {
       const hls = new Hls();
       const video = videoRef.current;
-      hls.loadSource('http://localhost:5000/playlist.m3u8');
+      hls.loadSource('http://localhost:5000/playlist/simpang_demangan_view_utara/simpang_demangan_view_utara.m3u8');
       hls.attachMedia(video);
 
     }

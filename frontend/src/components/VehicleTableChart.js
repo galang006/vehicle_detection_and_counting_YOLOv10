@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom';
 
 const VehicleDataTable = () => {
@@ -10,7 +9,7 @@ const VehicleDataTable = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/vehicle_track')
+    fetch('http://127.0.0.1:5000/vehicle_track?loc=simpang_demangan_view_utara')
       .then(response => response.json())
       .then(data => setVehicleData(data))
       .catch(error => console.error('Error fetching data:', error));

@@ -7,7 +7,7 @@ const VehicleDetail = () => {
 
   useEffect(() => {
     // Fetch data from the backend using the trackId and className from the URL
-    fetch(`http://127.0.0.1:5000/vehicle_track?track_id=${trackId}&class_name=${className}`)
+    fetch(`http://127.0.0.1:5000/vehicle_track?loc=${"simpang_demangan_view_utara"}&track_id=${trackId}&class_name=${className}`)
       .then(response => response.json())
       .then(data => setVehicleDetail(data))
       .catch(error => console.error('Error fetching vehicle detail:', error));

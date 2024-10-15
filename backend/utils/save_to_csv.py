@@ -9,7 +9,7 @@ def signal_handler(sig, frame, vehicle_count, vehicle_track):
     print("Data successfully saved.")
     exit(0)
 
-def save_data_to_csv(vehicle_count, vehicle_track):
+def save_data_to_csv(vehicle_count, vehicle_track, loc_name):
     current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     data = {
         'Class': list(vehicle_count['Nord']['In'].keys()), 
@@ -27,8 +27,8 @@ def save_data_to_csv(vehicle_count, vehicle_track):
 
     df_track = pd.DataFrame(vehicle_track, columns=['Track ID', 'Class Name', 'x1', 'y1', 'x2', 'y2', 'Direction', 'Speed', 'Timestamp'])
 
-    file_path = 'data/vehicle_counts.csv'
-    track_file_path = 'data/vehicle_track.csv'
+    file_path = f'data/vehicle_counts_{loc_name}.csv'
+    track_file_path = f'data/vehicle_track_{loc_name}.csv'
 
     try:
         if not os.path.exists(file_path):

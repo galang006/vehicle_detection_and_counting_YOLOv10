@@ -6,18 +6,36 @@ import supervision as sv
 from datetime import datetime
 import os
 from .config import *
-from utils import save_data_to_csv, ViewTransformer, save_track, draw_line, draw_text_with_background, display_vehicle_count, calculate_speed, signal_handler
+from utils import save_data_to_csv, ViewTransformer, save_track, draw_line, display_vehicle_count, calculate_speed, signal_handler
 import subprocess
 import signal
+from copy import deepcopy 
 
-output_dir = 'video'
-os.makedirs(output_dir, exist_ok=True)
 
-def vehicle_detection():
-    global vehicle_count
-    global vehicle_track
+def vehicle_detection(location):
+    video_url = location["video_url"]
+    LINES_COUNT = location["LINES_COUNT"]
+    LINES_RECTANGLE = location["LINES_RECTANGLE"]
+    SOURCE = location["SOURCE"]
+    directories = location["directories"]
+    TARGET_WIDTH = location["TARGET_WIDTH"]
+    TARGET_HEIGHT = location["TARGET_HEIGHT"]
+    loc_name = location["loc"]
+    output_dir = f'video/{loc_name}'
+
     global last_saved_minute
-    
+
+    TARGET = np.array(
+        [
+            [0, 0],
+            [TARGET_WIDTH - 1, 0],
+            [TARGET_WIDTH - 1, TARGET_HEIGHT - 1],
+            [0, TARGET_HEIGHT - 1],
+        ]
+    )
+    vehicle_count = deepcopy(count) 
+    vehicle_track = []
+
     signal.signal(signal.SIGINT, lambda sig, frame: signal_handler(sig, frame, vehicle_count, vehicle_track))
 
     for directory in directories:
@@ -51,7 +69,7 @@ def vehicle_detection():
         '-hls_list_size', '6',  # ensure all segments are listed
         '-hls_flags', 'delete_segments+append_list',  # dynamically update playlist and remove old segments
         '-hls_segment_filename', os.path.join(output_dir, 'segment_%03d.ts'),  # segment file pattern
-        os.path.join(output_dir, 'playlist.m3u8')  # m3u8 playlist
+        os.path.join(output_dir, f'{loc_name}.m3u8')  # m3u8 playlist
     ], stdin=subprocess.PIPE)
 
     model = YOLO('models/best.pt')
@@ -76,10 +94,12 @@ def vehicle_detection():
     )
 
     line_zones = {
-        "Nord": [sv.LineZone(start=LINES_COUNT["Nord"][0], end=LINES_COUNT["Nord"][1], triggering_anchors=[sv.Position.BOTTOM_CENTER]), "Nord"],
-        "East": [sv.LineZone(start=LINES_COUNT["East"][0], end=LINES_COUNT["East"][1], triggering_anchors=[sv.Position.BOTTOM_CENTER]), "East"],
-        "South": [sv.LineZone(start=LINES_COUNT["South"][0], end=LINES_COUNT["South"][1], triggering_anchors=[sv.Position.BOTTOM_CENTER]), "South"],
-        "West": [sv.LineZone(start=LINES_COUNT["West"][0], end=LINES_COUNT["West"][1], triggering_anchors=[sv.Position.BOTTOM_CENTER]), "West"],
+        zone_name: [
+            sv.LineZone(start=line_coordinates[0], end=line_coordinates[1],
+                        triggering_anchors=[sv.Position.BOTTOM_CENTER]),
+            zone_name
+        ]
+        for zone_name, line_coordinates in LINES_COUNT.items()
     }
 
     polygon_zone = sv.PolygonZone(polygon=SOURCE)
@@ -111,8 +131,8 @@ def vehicle_detection():
 
             for zone_name, line_zone in line_zones.items():
                 crossed_in, crossed_out = line_zone[0].trigger(detections)
-                save_track(crossed_in, detections, speed_record, dir=line_zone[1], in_out="In", frame=frame)
-                save_track(crossed_out, detections, speed_record, dir=line_zone[1], in_out="Out", frame=frame)
+                save_track(crossed_in, detections, speed_record, dir=line_zone[1], in_out="In", frame=frame, loc_name=loc_name,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
+                save_track(crossed_out, detections, speed_record, dir=line_zone[1], in_out="Out", frame=frame,loc_name=loc_name ,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
 
             annotated_frame = frame.copy()
             annotated_frame = trace_annotator.annotate(scene=annotated_frame, detections=detections)
@@ -132,14 +152,14 @@ def vehicle_detection():
 
             current_time = datetime.now()
             if current_time.minute % 5 == 0 and current_time.second == 0 and current_time.minute != last_saved_minute:
-                vehicle_track = save_data_to_csv(vehicle_count, vehicle_track)
+                vehicle_track = save_data_to_csv(vehicle_count, vehicle_track, loc_name)
                 last_saved_minute = current_time.minute  
 
             ffmpeg_process.stdin.write(annotated_frame.tobytes())
 
         except Exception as e:
             print(f"An error occurred: {e}")
-            save_data_to_csv(vehicle_count, vehicle_track)
+            save_data_to_csv(vehicle_count, vehicle_track, loc_name)
             break    
 
     cap.release()
@@ -147,10 +167,26 @@ def vehicle_detection():
     ffmpeg_process.wait()
 
 
-def display_detection():
-    global vehicle_count
-    global vehicle_track
+def display_detection(location):
+    video_url = location["video_url"]
+    LINES_COUNT = location["LINES_COUNT"]
+    LINES_RECTANGLE = location["LINES_RECTANGLE"]
+    SOURCE = location["SOURCE"]
+    directories = location["directories"]
+    TARGET_WIDTH = location["TARGET_WIDTH"]
+    TARGET_HEIGHT = location["TARGET_HEIGHT"]
+    loc_name = location["loc"]
     global last_saved_minute
+    TARGET = np.array(
+        [
+            [0, 0],
+            [TARGET_WIDTH - 1, 0],
+            [TARGET_WIDTH - 1, TARGET_HEIGHT - 1],
+            [0, TARGET_HEIGHT - 1],
+        ]
+    )
+    vehicle_count = count
+    vehicle_track = []
 
     signal.signal(signal.SIGINT, lambda sig, frame: signal_handler(sig, frame, vehicle_count, vehicle_track))
     for directory in directories:
@@ -195,10 +231,12 @@ def display_detection():
     )
 
     line_zones = {
-        "Nord": [sv.LineZone(start=LINES_COUNT["Nord"][0], end=LINES_COUNT["Nord"][1], triggering_anchors=[sv.Position.BOTTOM_CENTER]), "Nord"],
-        "East": [sv.LineZone(start=LINES_COUNT["East"][0], end=LINES_COUNT["East"][1], triggering_anchors=[sv.Position.BOTTOM_CENTER]), "East"],
-        "South": [sv.LineZone(start=LINES_COUNT["South"][0], end=LINES_COUNT["South"][1], triggering_anchors=[sv.Position.BOTTOM_CENTER]), "South"],
-        "West": [sv.LineZone(start=LINES_COUNT["West"][0], end=LINES_COUNT["West"][1], triggering_anchors=[sv.Position.BOTTOM_CENTER]), "West"],
+        zone_name: [
+            sv.LineZone(start=line_coordinates[0], end=line_coordinates[1],
+                        triggering_anchors=[sv.Position.BOTTOM_CENTER]),
+            zone_name
+        ]
+        for zone_name, line_coordinates in LINES_COUNT.items()
     }
 
     polygon_zone = sv.PolygonZone(polygon=SOURCE)
@@ -230,8 +268,8 @@ def display_detection():
 
             for zone_name, line_zone in line_zones.items():
                 crossed_in, crossed_out = line_zone[0].trigger(detections)
-                save_track(crossed_in, detections, speed_record, dir=line_zone[1], in_out="In", frame=frame)
-                save_track(crossed_out, detections, speed_record, dir=line_zone[1], in_out="Out", frame=frame)
+                save_track(crossed_in, detections, speed_record, dir=line_zone[1], in_out="In", frame=frame, loc_name=loc_name,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
+                save_track(crossed_out, detections, speed_record, dir=line_zone[1], in_out="Out", frame=frame,loc_name=loc_name ,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
 
             annotated_frame = frame.copy()
             annotated_frame = trace_annotator.annotate(scene=annotated_frame, detections=detections)
@@ -253,16 +291,16 @@ def display_detection():
 
             current_time = datetime.now()
             if current_time.minute % 5 == 0 and current_time.second == 0 and current_time.minute != last_saved_minute:
-                vehicle_track = save_data_to_csv(vehicle_count, vehicle_track)
+                vehicle_track = save_data_to_csv(vehicle_count, vehicle_track, loc_name)
                 last_saved_minute = current_time.minute  
         
             if cv2.waitKey(delay) & 0xFF == 27:  
-                save_data_to_csv(vehicle_count, vehicle_track)
+                save_data_to_csv(vehicle_count, vehicle_track, loc_name)
                 break
 
         except Exception as e:
             print(f"An error occurred: {e}")
-            save_data_to_csv(vehicle_count, vehicle_track)
+            save_data_to_csv(vehicle_count, vehicle_track, loc_name)
             break    
 
     cap.release()

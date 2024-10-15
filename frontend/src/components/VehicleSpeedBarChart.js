@@ -8,7 +8,7 @@ const VehicleSpeedBarChart = () => {
 
     useEffect(() => {
         // Ambil data dari API atau JSON statis
-        axios.get('http://127.0.0.1:5000/vehicle_track') // Ganti dengan endpoint API jika diperlukan
+        axios.get('http://127.0.0.1:5000/vehicle_track?loc=simpang_demangan_view_utara') // Ganti dengan endpoint API jika diperlukan
             .then(response => {
                 const data = response.data;
 

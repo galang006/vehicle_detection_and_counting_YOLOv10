@@ -1,9 +1,8 @@
-from .config import vehicle_count, vehicle_track
 from datetime import datetime
 import cv2
 import numpy as np
 
-def save_track(cross_in_out, detect, speed_record, dir, in_out, frame):
+def save_track(cross_in_out, detect, speed_record, dir, in_out, frame, loc_name, vehicle_count, vehicle_track):
     for index, data in enumerate(cross_in_out):
         if data == True:
             vehicle = detect.data["class_name"][index] 
@@ -14,7 +13,7 @@ def save_track(cross_in_out, detect, speed_record, dir, in_out, frame):
             speed = round(speed_record.get(tracker_id, 0), 2)
             new_data = [tracker_id,detect.data["class_name"][index],round(x1, 1),round(y1, 1),round(x2, 1),round(y2, 1),f"{dir}_{in_out}",speed,timestamp]
             vehicle_image = frame[int(y1):int(y2), int(x1):int(x2)]
-            cv2.imwrite(f"data/images/{dir}/{vehicle}_{tracker_id}_{timestamp}.jpg", vehicle_image)
+            cv2.imwrite(f"data/images/{loc_name}/{dir}/{vehicle}_{tracker_id}_{timestamp}.jpg", vehicle_image)
             vehicle_track.append(new_data)
 
 def calculate_speed(detections, coordinates, fps):
