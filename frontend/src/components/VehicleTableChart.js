@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const VehicleDataTable = () => {
   const [vehicleData, setVehicleData] = useState([]);
@@ -7,17 +8,19 @@ const VehicleDataTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 100;
   const navigate = useNavigate();
+  const search = useLocation().search;
+  const loc = new URLSearchParams(search).get('loc');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/vehicle_track?loc=simpang_demangan_view_utara')
+    fetch(`http://127.0.0.1:5000/vehicle_track?loc=${loc}`)
       .then(response => response.json())
       .then(data => setVehicleData(data))
       .catch(error => console.error('Error fetching data:', error));
-  }, []);
+  }, [loc]);
 
   // Function to handle row click
   const handleRowClick = (trackId, className) => {
-    navigate(`/vehicle/${trackId}/${className}`);
+    navigate(`/vehicle/${loc}/${trackId}/${className}`);
   };
 
   // Get current data to display based on pagination
@@ -42,7 +45,7 @@ const VehicleDataTable = () => {
     <div className="container mt-5">
       <h2>Vehicle Track Table</h2>
       <table className="table table-bordered table-hover">
-        <thead className="table-primary">
+        <thead className="table-success">
           <tr>
             <th>Class Name</th>
             <th>Track ID</th>
@@ -74,11 +77,11 @@ const VehicleDataTable = () => {
 
       {/* Pagination controls */}
       <div className="pagination-controls">
-        <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
+        <button className="btn btn-success" onClick={handlePrevPage} disabled={currentPage === 1}>
           Prev
         </button>
         <span className="mx-3">Page {currentPage}</span>
-        <button className="btn btn-primary" onClick={handleNextPage} disabled={indexOfLastItem >= vehicleData.length}>
+        <button className="btn btn-success" onClick={handleNextPage} disabled={indexOfLastItem >= vehicleData.length}>
           Next
         </button>
       </div>

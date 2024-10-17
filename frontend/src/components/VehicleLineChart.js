@@ -2,13 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const VehicleLineChart = () => {
+    const search = useLocation().search;
+    const loc = new URLSearchParams(search).get('loc');
     const [vehicleData, setVehicleData] = useState([]);
 
     const fetchVehicleData = () => {
         // Ambil data dari API
-        axios.get('http://127.0.0.1:5000/vehicle_count?loc=simpang_demangan_view_utara') 
+        axios.get(`http://127.0.0.1:5000/vehicle_count?loc=${loc}`)
             .then(response => {
                 console.log(response.data); // Tambahkan ini untuk debug
                 const formattedData = response.data.reduce((acc, item) => {
@@ -47,19 +50,19 @@ const VehicleLineChart = () => {
                 console.error('Error fetching data:', error);
             });
     };
-    
+
     useEffect(() => {
         fetchVehicleData();
 
         const intervalId = setInterval(fetchVehicleData, 300000);
 
         return () => clearInterval(intervalId);
-    }, []);
+    }, [loc]);
 
     return (
-        <div style={{ width: '100%', height: 400 }}>
-            <h2>Vehicle Count Line Chart</h2>
-            <ResponsiveContainer width="90%" height="100%">
+        <div style={{ width: '100%', height: 400, padding: '20px', marginBottom: '20px' }}>
+            <h2>Vehicle Count by Time</h2>
+            <ResponsiveContainer width="95%" height={300}>
                 <LineChart data={vehicleData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
