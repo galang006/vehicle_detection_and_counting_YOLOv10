@@ -1,6 +1,46 @@
 .App {
   text-align: center;
+  background-color: #518675;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
+
+.navbar {
+  background-color: #1be4a4;
+  padding: 10px 15px;
+  padding-bottom: 10px;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.nav-link {
+  color: #333;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.navbar-img {
+  margin-right: 10px;
+}
+
+.custom-card {
+  background-color: #e0f7f0 !important;
+  color: #333;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
 
 .chart-row {
   display: flex;
@@ -9,6 +49,77 @@
   margin-bottom: 100px;
   margin-top: 100px;
 }
+
+.footer {
+  background-color: #1be4a4;
+  color: #6c757d;
+  border-top: 1px solid #e7e7e7;
+  padding: 5px 0;
+  position: relative;
+  width: 100%;
+}
+
+.footer .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}
+
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card-img {
+  border-radius: 10px;
+}
+
+.card-text {
+  text-align: left;
+}
+
+.details-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.animated-background {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  min-height: calc(100vh - 95px); /* Adjust according to navbar and footer height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+
+
+
+
 
 .App-logo {
   height: 40vmin;
