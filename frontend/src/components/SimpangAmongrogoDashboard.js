@@ -16,14 +16,14 @@ const SimpangAmongrogoDashboard = () => {
             {/* Video player card */}
             <Card className="mb-3 mt-3 custom-card">
                 <Card.Body>
-                    <VideoPlay loc={loc} />
+                    <VideoPlay />
                 </Card.Body>
             </Card>
 
             {/* Line chart card */}
             <Card className="mb-3 custom-card">
                 <Card.Body>
-                    <VehicleLineChart loc={loc} />
+                    <VehicleLineChart />
                 </Card.Body>
             </Card>
 
@@ -31,13 +31,13 @@ const SimpangAmongrogoDashboard = () => {
             <div className="chart-row" style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', marginBottom: '5px', marginTop: '10px' }}>
                 <Card className="mb-3 custom-card" style={{ flex: 1, marginRight: '5px' }}>
                     <Card.Body>
-                        <VehicleSpeedBarChart loc={loc} />
+                        <VehicleSpeedBarChart />
                     </Card.Body>
                 </Card>
 
                 <Card className="mb-3 custom-card" style={{ flex: 1, marginLeft: '5px' }}>
                     <Card.Body>
-                        <VehicleDirectionBarChart loc={loc} />
+                        <VehicleDirectionBarChart />
                     </Card.Body>
                 </Card>
             </div>
@@ -45,7 +45,7 @@ const SimpangAmongrogoDashboard = () => {
             {/* Table data card */}
             <Card className="mb-5 custom-card">
                 <Card.Body>
-                    <VehicleDataTable loc={loc} />
+                    <VehicleDataTable />
                 </Card.Body>
             </Card>
         </div>
