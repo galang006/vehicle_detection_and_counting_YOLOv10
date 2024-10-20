@@ -6,7 +6,7 @@ import supervision as sv
 from datetime import datetime
 import os
 from .config import *
-from utils import save_data_to_csv, ViewTransformer, save_track, draw_line, display_vehicle_count, calculate_speed, signal_handler
+from utils import save_data_to_csv, ViewTransformer, save_track, draw_line, display_vehicle_count, calculate_speed, signal_handler, check_last_id
 import subprocess
 import signal
 from copy import deepcopy 
@@ -23,6 +23,7 @@ def vehicle_detection(location):
     loc_name = location["loc"]
     output_dir = f'video/{loc_name}'
 
+    last_id = check_last_id(loc_name)
     global last_saved_minute
 
     TARGET = np.array(
@@ -176,7 +177,10 @@ def display_detection(location):
     TARGET_WIDTH = location["TARGET_WIDTH"]
     TARGET_HEIGHT = location["TARGET_HEIGHT"]
     loc_name = location["loc"]
+    last_id = check_last_id(loc_name)
+
     global last_saved_minute
+
     TARGET = np.array(
         [
             [0, 0],
@@ -268,8 +272,8 @@ def display_detection(location):
 
             for zone_name, line_zone in line_zones.items():
                 crossed_in, crossed_out = line_zone[0].trigger(detections)
-                save_track(crossed_in, detections, speed_record, dir=line_zone[1], in_out="In", frame=frame, loc_name=loc_name,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
-                save_track(crossed_out, detections, speed_record, dir=line_zone[1], in_out="Out", frame=frame,loc_name=loc_name ,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
+                save_track(crossed_in, detections, last_id ,speed_record, dir=line_zone[1], in_out="In", frame=frame, loc_name=loc_name,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
+                save_track(crossed_out, detections, last_id ,speed_record, dir=line_zone[1], in_out="Out", frame=frame,loc_name=loc_name ,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
 
             annotated_frame = frame.copy()
             annotated_frame = trace_annotator.annotate(scene=annotated_frame, detections=detections)

@@ -49,3 +49,18 @@ def save_data_to_csv(vehicle_count, vehicle_track, loc_name):
         print(f"An error occurred while saving the data: {e}")
 
     return []
+
+def check_last_id(loc_name):
+    csv_file = f'data/vehicle_track_{loc_name}.csv'
+
+    try:
+        df = pd.read_csv(csv_file)
+        largest_track_id = df['Track ID'].max()  
+    except FileNotFoundError:
+        print(f"Error: CSV file '{csv_file}' not found.")
+        largest_track_id = 0
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        largest_track_id = 0
+    
+    return largest_track_id
