@@ -132,8 +132,8 @@ def vehicle_detection(location):
 
             for zone_name, line_zone in line_zones.items():
                 crossed_in, crossed_out = line_zone[0].trigger(detections)
-                save_track(crossed_in, detections, speed_record, dir=line_zone[1], in_out="In", frame=frame, loc_name=loc_name,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
-                save_track(crossed_out, detections, speed_record, dir=line_zone[1], in_out="Out", frame=frame,loc_name=loc_name ,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
+                save_track(crossed_in, detections, last_id ,speed_record, dir=line_zone[1], in_out="In", frame=frame, loc_name=loc_name,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
+                save_track(crossed_out, detections, last_id ,speed_record, dir=line_zone[1], in_out="Out", frame=frame,loc_name=loc_name ,vehicle_count=vehicle_count, vehicle_track=vehicle_track)
 
             annotated_frame = frame.copy()
             annotated_frame = trace_annotator.annotate(scene=annotated_frame, detections=detections)
