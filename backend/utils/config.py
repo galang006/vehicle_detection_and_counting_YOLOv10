@@ -6,9 +6,9 @@ simpang_amongrogo_view_timur = {
     "video_url" : "https://cctvjss.jogjakota.go.id/atcs/ATCS_Simpang_Amongrogo_View_Timur.stream/chunklist_w14842540.m3u8",
     "LINES_COUNT" : {
         "Nord": (sv.Point(744, 593), sv.Point(1342, 564)),
-        "West": (sv.Point(89, 1031), sv.Point(345, 682)),
         "East": (sv.Point(1420, 562), sv.Point(1726, 670)),
-        "South": (sv.Point(1716, 859), sv.Point(89, 1031))
+        "South": (sv.Point(1716, 859), sv.Point(89, 1031)),
+        "West": (sv.Point(89, 1031), sv.Point(345, 682))
     },
     "LINES_RECTANGLE" : [
         sv.Point(335, 567), 
@@ -18,7 +18,7 @@ simpang_amongrogo_view_timur = {
     ],
     "SOURCE": np.array([[335, 567], [1383, 520], [2450, 820], [-350, 1250]]),
     "TARGET_WIDTH" : 30,
-    "TARGET_HEIGHT" :  21.5,
+    "TARGET_HEIGHT" :  27,
     "directories" : ['data/images/simpang_amongrogo_view_timur/Nord', 'data/images/simpang_amongrogo_view_timur/East', 'data/images/simpang_amongrogo_view_timur/West', 'data/images/simpang_amongrogo_view_timur/South', 'video/simpang_amongrogo_view_timur']
 }
 
@@ -63,12 +63,12 @@ simpang_demangan_view_utara = {
 
 VEHICLE_CLASSES = ["bus", "car", "motorcycle", "truck"]
 
-count = {
-    "Nord": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
-    "East": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
-    "South": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
-    "West": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
-}
+# count = {
+#     "Nord": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
+#     "East": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
+#     "South": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
+#     "West": {"In": {cls: 0 for cls in VEHICLE_CLASSES}, "Out": {cls: 0 for cls in VEHICLE_CLASSES}},
+# }
 
 last_saved_minute = -1
 

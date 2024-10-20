@@ -33,7 +33,7 @@ def display_vehicle_count(annotated_frame, vehicle_count,title,position, text_co
     y0, dy = position[1], 30  # Dy for spacing between lines
 
     # Draw the title for the direction
-    cv2.putText(annotated_frame, title, (position[0], y0), cv2.FONT_HERSHEY_SIMPLEX, 0.7, text_color, 2)
+    draw_text_with_background(annotated_frame, title, (position[0], y0), text_color=text_color, bg_color=bg_color)
 
     # Draw the vehicle count below the title
     for i, line in enumerate(vehicle_count_text.split('\n')):

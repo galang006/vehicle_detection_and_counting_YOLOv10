@@ -11,18 +11,14 @@ def signal_handler(sig, frame, vehicle_count, vehicle_track):
 
 def save_data_to_csv(vehicle_count, vehicle_track, loc_name):
     current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    data = {
-        'Class': list(vehicle_count['Nord']['In'].keys()), 
-        'Nord In': [vehicle_count['Nord']['In'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES],
-        'Nord Out': [vehicle_count['Nord']['Out'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES],
-        'East In': [vehicle_count['East']['In'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES],
-        'East Out': [vehicle_count['East']['Out'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES],
-        'South In': [vehicle_count['South']['In'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES],
-        'South Out': [vehicle_count['South']['Out'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES],
-        'West In': [vehicle_count['West']['In'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES],
-        'West Out': [vehicle_count['West']['Out'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES],
-        'timestamp': [current_time] * len(VEHICLE_CLASSES)
-    }
+    directions = vehicle_count.keys()
+    data = {'Class': VEHICLE_CLASSES}
+
+    for direction in directions:
+        data[f'{direction} In'] = [vehicle_count[direction]['In'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES]
+        data[f'{direction} Out'] = [vehicle_count[direction]['Out'].get(vehicle, 0) for vehicle in VEHICLE_CLASSES]
+
+    data['timestamp'] = [current_time] * len(VEHICLE_CLASSES)
     df_counts = pd.DataFrame(data)
 
     df_track = pd.DataFrame(vehicle_track, columns=['Track ID', 'Class Name', 'x1', 'y1', 'x2', 'y2', 'Direction', 'Speed', 'Timestamp'])

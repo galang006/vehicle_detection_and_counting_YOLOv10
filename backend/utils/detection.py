@@ -34,7 +34,13 @@ def vehicle_detection(location):
             [0, TARGET_HEIGHT - 1],
         ]
     )
-    vehicle_count = deepcopy(count) 
+    vehicle_count = {
+        zone: {
+            "In": {cls: 0 for cls in VEHICLE_CLASSES}, 
+            "Out": {cls: 0 for cls in VEHICLE_CLASSES}
+        } 
+        for zone in LINES_COUNT.keys()
+    }
     vehicle_track = []
 
     signal.signal(signal.SIGINT, lambda sig, frame: signal_handler(sig, frame, vehicle_count, vehicle_track))
@@ -189,7 +195,14 @@ def display_detection(location):
             [0, TARGET_HEIGHT - 1],
         ]
     )
-    vehicle_count = count
+ 
+    vehicle_count = {
+        zone: {
+            "In": {cls: 0 for cls in VEHICLE_CLASSES}, 
+            "Out": {cls: 0 for cls in VEHICLE_CLASSES}
+        } 
+        for zone in LINES_COUNT.keys()
+    }
     vehicle_track = []
 
     signal.signal(signal.SIGINT, lambda sig, frame: signal_handler(sig, frame, vehicle_count, vehicle_track))
