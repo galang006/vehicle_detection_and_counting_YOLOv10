@@ -9,49 +9,62 @@ const VehicleLineChart = () => {
     const loc = new URLSearchParams(search).get('loc');
     const [vehicleData, setVehicleData] = useState([]);
 
-    const fetchVehicleData = () => {
-        // Ambil data dari API
-        axios.get(`http://127.0.0.1:5000/vehicle_count?loc=${loc}`)
-            .then(response => {
-                console.log(response.data); // Tambahkan ini untuk debug
-                const formattedData = response.data.reduce((acc, item) => {
-                    const timestamp = item.timestamp;
+    useEffect(() => {
+        const fetchVehicleData = () => {
+            // Ambil data dari API
+            axios.get(`http://127.0.0.1:5000/vehicle_count?loc=${loc}`)
+                .then(response => {
+                    console.log(response.data); // Tambahkan ini untuk debug
+                    const formattedData = response.data.reduce((acc, item) => {
+                        const timestamp = item.timestamp;
 
-                    // Buat objek jika belum ada untuk timestamp ini
-                    if (!acc[timestamp]) {
-                        acc[timestamp] = {
-                            name: timestamp,
+                        // Buat objek jika belum ada untuk timestamp ini
+                        if (!acc[timestamp]) {
+                            acc[timestamp] = {
+                                name: timestamp,
+                                bus: 0,
+                                car: 0,
+                                motorcycle: 0,
+                                truck: 0,
+                            };
+                        }
+
+                        // Tambah jumlah kendaraan IN dari semua arah
+                        acc[timestamp].bus += item.Class === 'bus' ? (item['Nord In'] || 0) + (item['East In'] || 0) + (item['South In'] || 0) + (item['West In'] || 0) : 0;
+                        acc[timestamp].car += item.Class === 'car' ? (item['Nord In'] || 0) + (item['East In'] || 0) + (item['South In'] || 0) + (item['West In'] || 0) : 0;
+                        acc[timestamp].motorcycle += item.Class === 'motorcycle' ? (item['Nord In'] || 0) + (item['East In'] || 0) + (item['South In'] || 0) + (item['West In'] || 0) : 0;
+                        acc[timestamp].truck += item.Class === 'truck' ? (item['Nord In'] || 0) + (item['East In'] || 0) + (item['South In'] || 0) + (item['West In'] || 0) : 0;
+
+                        return acc;
+                    }, {});
+
+                    // Ubah objek menjadi array dan pastikan setiap kendaraan memiliki nilai
+                    const dataArray = Object.values(formattedData).map(item => ({
+                        ...item,
+                        bus: item.bus || 0,
+                        car: item.car || 0,
+                        motorcycle: item.motorcycle || 0,
+                        truck: item.truck || 0,
+                    }));
+
+                    // Jika dataArray kosong, tambahkan entri default
+                    if (dataArray.length === 0) {
+                        dataArray.push({
+                            name: new Date().toISOString(),
                             bus: 0,
                             car: 0,
                             motorcycle: 0,
                             truck: 0,
-                        };
+                        });
                     }
 
-                    // Tambah jumlah kendaraan IN
-                    if (item.Class === 'bus') {
-                        acc[timestamp].bus += item['East In'] + item['Nord In'] + item['South In'] + item['West In'];
-                    } else if (item.Class === 'car') {
-                        acc[timestamp].car += item['East In'] + item['Nord In'] + item['South In'] + item['West In'];
-                    } else if (item.Class === 'motorcycle') {
-                        acc[timestamp].motorcycle += item['East In'] + item['Nord In'] + item['South In'] + item['West In'];
-                    } else if (item.Class === 'truck') {
-                        acc[timestamp].truck += item['East In'] + item['Nord In'] + item['South In'] + item['West In'];
-                    }
+                    setVehicleData(dataArray);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        };
 
-                    return acc;
-                }, {});
-
-                // Ubah objek menjadi array
-                const dataArray = Object.values(formattedData);
-                setVehicleData(dataArray);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    };
-
-    useEffect(() => {
         fetchVehicleData();
 
         const intervalId = setInterval(fetchVehicleData, 300000);
