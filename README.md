@@ -57,3 +57,22 @@ This project is a real-time vehicle detection, tracking, and counting system des
     npm start
     ```
     - The frontend will launch, displaying the web interface for the vehicle detection system. Follow on-screen instructions to view the video streams and vehicle detection results.
+
+## Code Structure
+
+1. Backend (backend/):
+    - `app.py`: The main Flask API application file, handling API routes. This includes the /playlist route to serve m3u8 files and trigger vehicle detection.
+    - `main.py`: The script for generating vehicle detection playlists.
+    - `utils/`: A folder containing utility modules. For instance:
+        - `config.py`: Contains configurations for different video sources, lines for counting vehicles, and directory paths for storing images and data.
+        - `detection.py`: Implements vehicle_detection function and other detection logic.
+        - `tracking.py`: Provides functions for tracking vehicles and calculating their speeds.
+        - `save_to_csv.py`: Handles saving data to CSV files.
+        - `view_transformer.py`: Implements a class for perspective transformation (ViewTransformer). This transforms points from a source view to a target view, useful for aligning camera views to a common perspective.
+        - `display.py`:  Provides functions for displaying text and drawing lines on video frames to visualize vehicle counts and directions.
+    - `data/`: Stores generated data such as CSV files and captured images.
+  
+2. Frontend (frontend/):
+    - `src/`: Contains the React application code.
+    - `components/`: Holds reusable components (e.g., video player, detection results).
+    - `App.js` and `index.js`: Set up the main app structure and entry point.
