@@ -9,7 +9,6 @@ from .config import *
 from utils import save_data_to_csv, ViewTransformer, save_track, draw_line, display_vehicle_count, calculate_speed, signal_handler, check_last_id
 import subprocess
 import signal
-from copy import deepcopy 
 
 
 def vehicle_detection(location):
