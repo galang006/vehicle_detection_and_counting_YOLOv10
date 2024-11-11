@@ -71,7 +71,7 @@ This project is a real-time vehicle detection, tracking, and counting system des
         - `view_transformer.py`: Implements a class for perspective transformation (ViewTransformer). This transforms points from a source view to a target view, useful for aligning camera views to a common perspective.
         - `display.py`:  Provides functions for displaying text and drawing lines on video frames to visualize vehicle counts and directions.
     - `data/`: Stores generated data such as CSV files and captured images.
-  
+    - `video/`: Stores generated video playlist.
 2. Frontend (frontend/):
     - `src/`: Contains the React application code.
     - `components/`: Holds reusable components (e.g., video player, detection results).
