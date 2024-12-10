@@ -61,7 +61,7 @@ def filter_vehicle_data():
         for i, item in enumerate(filtered_data_list):
             item['Image URL'] = image_urls[i]['Image URL'] if i < len(image_urls) else None
         
-        return jsonify(filtered_data_list)
+        return jsonify(filtered_data_list), 200
     else:
         return jsonify({'message': 'No data found for the given filters'}), 404
 
@@ -76,9 +76,9 @@ def get_vehicle_count():
 
         df_vehicle_count = pd.read_csv(csv_file)
         data_vehicle_count = df_vehicle_count.to_dict(orient='records')
-        return jsonify(data_vehicle_count)
+        return jsonify(data_vehicle_count), 200
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/vehicle_track', methods=['GET'])
 def get_vehicle_track():
@@ -91,9 +91,9 @@ def get_vehicle_track():
 
         df_vehicle_track = pd.read_csv(csv_file)
         data_vehicle_track = df_vehicle_track.to_dict(orient='records')
-        return jsonify(data_vehicle_track)
+        return jsonify(data_vehicle_track), 200
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)  
