@@ -1,6 +1,6 @@
 # Vehicle Detection and Counting System
 
-This project is a real-time vehicle detection, tracking, and counting system designed for traffic monitoring. The system is implemented using OpenCV for image processing and Flask for API management. It processes video streams, tracks vehicle entries and exits from defined zones, and provides vehicle counts in each direction.
+This project is a real-time vehicle detection, tracking, and counting system designed for traffic monitoring. The system is implemented using OpenCV for image processing, YOLOv10 for image detection and Flask for API management. It processes video streams, tracks vehicle entries and exits from defined zones, and provides vehicle counts in each direction.
 
 ## Features
 
