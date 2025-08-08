@@ -1,0 +1,5 @@
+backend/data/
+backend/video/
+backup/
+
+**/__pycache__/
